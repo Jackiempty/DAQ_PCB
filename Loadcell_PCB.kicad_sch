@@ -2731,7 +2731,7 @@
     (effects (font (size 5 5)) (justify left bottom))
     (uuid 3d0d897d-88f0-4d35-91ca-f98d63ceaef6)
   )
-  (text "Mounting Holes\n" (at 203.2 242.57 0)
+  (text "Mounting Holes (M3)\n" (at 201.93 242.57 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 68b8c572-cb85-4ded-8766-605978921631)
   )
