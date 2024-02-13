@@ -1,7 +1,8 @@
 # Loadcell Datalogging 開發日記
-###### tags:`Avionics`
 
-[toc]
+[![hackmd-github-sync-badge](https://hackmd.io/6wCwDJi5RnyODmf0SUcP3A/badge)](https://hackmd.io/6wCwDJi5RnyODmf0SUcP3A)
+
+###### tags:`Avionics`
 
 ## 線路連接
 ![image](https://hackmd.io/_uploads/SJgJyJ1DKa.png)
@@ -192,7 +193,7 @@ void loop() {
 1. 將電腦接上 Arduino Nano 板
 2. 將 Loadcell 本體接上接口，按照下圖
 
-![image](https://hackmd.io/_uploads/Hk6MZwpYa.png =x400)
+![image](https://hackmd.io/_uploads/Hk6MZwpYa.png)
 
 4. 先個別將記憶卡拿下來清除內容再裝回去
 5. 打開測量程式，將你的校正參數打在程式起始處
@@ -202,7 +203,7 @@ void loop() {
 `Plotting 圖片的部分等我回台南補上`
 
 ## 洞洞板焊接結果
-![image](https://hackmd.io/_uploads/SkOJo_vt6.png =x470)  ![image](https://hackmd.io/_uploads/r1M-oOPYa.png =x470)
+<img src="https://hackmd.io/_uploads/SkOJo_vt6.png" height="470"/> <img src="https://hackmd.io/_uploads/r1M-oOPYa.png" height="470"/>
 
 這算是我焊的第一塊洞洞板，中間歷經了使用AWG30的線、焊錯要解焊、換使用有橡膠套的線，最後花了總時長大概四小時左右將它焊完。
 
