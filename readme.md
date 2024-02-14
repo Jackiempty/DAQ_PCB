@@ -204,10 +204,7 @@ void loop() {
 `Plotting 圖片的部分等我回台南補上`
 
 ## 洞洞板焊接結果
-![image](https://hackmd.io/_uploads/rJo_NF5j6.png)  
-
-![image](https://hackmd.io/_uploads/HJj_4F5sp.png)  
-
+<img src="https://hackmd.io/_uploads/rJo_NF5j6.png" width="350"/> <img src="https://hackmd.io/_uploads/HJj_4F5sp.png" width="350"/>
 
 這算是我焊的第一塊洞洞板，中間歷經了使用AWG30的線、焊錯要解焊、換使用有橡膠套的線，最後花了總時長大概四小時左右將它焊完。
 
