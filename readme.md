@@ -1,7 +1,8 @@
 # Loadcell Datalogging 開發日記
 
-[![hackmd-github-sync-badge](https://hackmd.io/6wCwDJi5RnyODmf0SUcP3A/badge)](https://hackmd.io/6wCwDJi5RnyODmf0SUcP3A)
+[![hackmd-github-sync-badge](https://hackmd.io/6wCwDJi5RnyODmf0SUcP3A/badge)](https://hackmd.io/6wCwDJi5RnyODmf0SUcP3A)  
 
+[**Github link**](https://github.com/Jackiempty/Loadcell_PCB)
 ###### tags:`Avionics`
 
 ## 線路連接
@@ -203,7 +204,7 @@ void loop() {
 `Plotting 圖片的部分等我回台南補上`
 
 ## 洞洞板焊接結果
-<img src="https://hackmd.io/_uploads/SkOJo_vt6.png" height="470"/> <img src="https://hackmd.io/_uploads/r1M-oOPYa.png" height="470"/>
+<img src="https://hackmd.io/_uploads/SkOJo_vt6.png" height="400"/> <img src="https://hackmd.io/_uploads/r1M-oOPYa.png" height="400"/>
 
 這算是我焊的第一塊洞洞板，中間歷經了使用AWG30的線、焊錯要解焊、換使用有橡膠套的線，最後花了總時長大概四小時左右將它焊完。
 
