@@ -212,7 +212,15 @@ void loop() {
 下一步應該就是要開始設計集成電路板了，也是一個我沒做過的事
 
 ## 外殼
-`待更新`
+用 Solidworks 簡單畫了一個外殼，除了有仔細算過整個總成的 Dimension 並畫出可以 fit 整片洞洞板上去，還在殼上弄出一些洞可以穿線路，最後還設計了一個可以卡上去的蓋子  
+
+![image](https://hackmd.io/_uploads/Hy2IO4Ria.png)  
+
+在計算總成的 Dimension 時也順便把它畫出來以方便比對外殼的大小有沒有畫對  
+
+![image](https://hackmd.io/_uploads/SJTLcV0ja.png)  
+
+
 
 # PCB 開發紀錄
 作完了自己把所有元件焊在一片板子上之後，更進一步整合就是要作 PCB 了
