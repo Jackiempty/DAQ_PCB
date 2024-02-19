@@ -188,7 +188,6 @@ void loop() {
 
 **恭喜你得到了你的校正參數了🎉**
 
-`Plotting 圖片的部分等我回台南補上`
 
 ## 使用方法
 1. 將電腦接上 Arduino Nano 板
@@ -201,8 +200,15 @@ void loop() {
 6. 上傳
 7. 打開 Serial Monitor 和 Serial Plotter
 
-`Plotting 圖片的部分等我回台南補上`
-
+* Serial Monitor  
+![image](https://hackmd.io/_uploads/ByFIvlkha.png)  
+在 Serial Monitor 我們所看到的數字分別是  
+左：時間  
+右：重量讀值  
+* Serial Plotter  
+![image](https://hackmd.io/_uploads/H1sVvxk2p.png)  
+在 Serial Plotter 中，因為它畫圖的方法是把所有值都給予編號，並以編號為橫軸，讀值為縱軸列出  
+所以這個圖的判讀法就是固定橫軸的值之後得到的兩個縱軸數值就是時間和重量，而非橫軸為時間，縱軸為重量  
 ## 洞洞板焊接結果
 <img src="https://hackmd.io/_uploads/rJo_NF5j6.png" width="350"/> <img src="https://hackmd.io/_uploads/HJj_4F5sp.png" width="350"/>
 
@@ -219,7 +225,6 @@ void loop() {
 在計算總成的 Dimension 時也順便把它畫出來以方便比對外殼的大小有沒有畫對  
 
 ![image](https://hackmd.io/_uploads/SJTLcV0ja.png)  
-
 
 
 # PCB 開發紀錄
