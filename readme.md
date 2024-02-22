@@ -284,3 +284,7 @@ ver1.2 將有銳角的線路修鈍，並做些小優化
 ![image](https://hackmd.io/_uploads/Sktefkdsp.png)  
 
 ![image](https://hackmd.io/_uploads/BJKXMJOja.png)  
+
+## 待更新：
+- [ ] HX711： Rate 腳位要做 either 上拉 or 下拉  
+- [ ] 增加 UART 接口  
