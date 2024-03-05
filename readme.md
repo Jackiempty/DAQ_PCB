@@ -234,8 +234,9 @@ void loop() {
 ### ver1.0
 ![image](https://hackmd.io/_uploads/SkswSY89p.png)  
 
-### ver1.4
-![image](https://hackmd.io/_uploads/S1btW1usa.png)  
+### ver1.5
+![image](https://hackmd.io/_uploads/BJxTOpET6.png)
+  
 
 
 ### Update
@@ -256,10 +257,13 @@ RESET 電路的上拉電阻畫錯了，進行修正，連同 PCB 一起
 
 更 1.4 版：  
 將多餘的線路刪掉（VBUS、SS1P3L），並優化電容配置  
+
+更 1.5 版：  
+將 HX711 上的 rate 腳位做成上拉電阻，以增加可以改變運作頻率的選擇  
 :::
 
 ## Footprint
-![image](https://hackmd.io/_uploads/B1-0abZoT.png)  
+![image](https://hackmd.io/_uploads/rJMnKpE6p.png)  
 
 Footprint 的選擇其實有遇到一些困難  
 比較有問題的幾個分別是
@@ -280,11 +284,12 @@ Footprint 的選擇其實有遇到一些困難
 :information_source: Update  
 ver1.1 導了圓角  
 ver1.2 將有銳角的線路修鈍，並做些小優化  
+ver1.3 參照 sch ver1.5  
 :::
-![image](https://hackmd.io/_uploads/Sktefkdsp.png)  
+![image](https://hackmd.io/_uploads/B1Bo9a4pa.png)  
 
-![image](https://hackmd.io/_uploads/BJKXMJOja.png)  
+![image](https://hackmd.io/_uploads/HJSCq64Tp.png)  
 
 ## 待更新：
-- [ ] HX711： Rate 腳位要做 either 上拉 or 下拉  
+- [x] HX711： Rate 腳位要做 either 上拉 or 下拉  
 - [ ] 增加 UART 接口  
