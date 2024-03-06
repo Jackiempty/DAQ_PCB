@@ -151,7 +151,7 @@ void loop() {
     if (myFile) {
       // Serial.print("Writing to test.txt...");
       myFile.print(t);
-      mtFile.print(": ");
+      myFile.print(": ");
       myFile.println(weight);
 
       // close the file:
@@ -169,7 +169,7 @@ void loop() {
 
 ## 校正步驟
 
-1. 準備好你的法碼（可以是標準法碼也可以是你是先量好重量的東西，ex:手機、水壺）
+1. 準備好你的法碼（可以是標準法碼也可以是你是先量好重量的東西，eg:手機、水壺）
 2. 將 Loadcell 本體接上接口，按照下圖（使用方法那邊） 
 4. 打開校正程式，在程式的起始處填上你的法碼重量並上傳
 5. 開啟Serial Monitor
@@ -278,8 +278,8 @@ Footprint 的選擇其實有遇到一些困難
 
 總之目前的配置大概是這樣，**作為讀者的你如果有發現任何問題請不吝賜教**
 
-## PCB Layout (ver1.2)
-**Refer to sch ver1.4**  
+## PCB Layout (ver1.3)
+**Refer to sch ver1.5**  
 :::info
 :information_source: Update  
 ver1.1 導了圓角  
