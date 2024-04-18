@@ -7504,6 +7504,7 @@
 			(uuid "1ed7efca-a936-4fb8-8137-1caaa770f7d3")
 		)
 		(model "${KIPRJMOD}/SOP16.STEP"
+			(hide yes)
 			(offset
 				(xyz 0 0 0)
 			)
@@ -7512,6 +7513,17 @@
 			)
 			(rotate
 				(xyz 0 0 90)
+			)
+		)
+		(model "${KICAD8_3DMODEL_DIR}/Package_SO.3dshapes/SOP-16_4.4x10.4mm_P1.27mm.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
 			)
 		)
 	)
@@ -10942,7 +10954,7 @@
 		(descr "Through hole angled pin header, 1x02, 2.54mm pitch, 6mm pin length, single row")
 		(tags "Through hole angled pin header THT 1x02 2.54mm single row")
 		(property "Reference" "J4"
-			(at 4.385 -2.27 270)
+			(at 4.385 -2.27 -90)
 			(layer "F.SilkS")
 			(uuid "9240c268-b272-43f9-960d-da9a92719a58")
 			(effects
@@ -10953,7 +10965,7 @@
 			)
 		)
 		(property "Value" "GPS"
-			(at 4.385 4.81 270)
+			(at 4.385 4.81 -90)
 			(layer "F.Fab")
 			(uuid "1ce224ac-8f7e-49e9-8d7b-01f189eec1c7")
 			(effects
@@ -11445,7 +11457,7 @@
 			(uuid "592a3734-ce12-4ff8-86ba-1e77e8f8876c")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 2.77 1.27 360)
+			(at 2.77 1.27 0)
 			(layer "F.Fab")
 			(uuid "9b1624f0-21df-4be3-ba4e-ea200409739a")
 			(effects
