@@ -11,7 +11,7 @@
 
 ## 程式碼
 ### 校正程式
-```c++
+```cpp
 #include "HX711.h"
 
 // HX711 接線設定
@@ -42,7 +42,7 @@ void loop() {
 ```
 
 ### 紀錄程式
-```c++
+```cpp
 #include <SPI.h>
 #include <SD.h>
 #include "HX711.h"
@@ -235,9 +235,7 @@ void loop() {
 ![image](https://hackmd.io/_uploads/SkswSY89p.png)  
 
 ### ver1.5
-![image](https://hackmd.io/_uploads/BJxTOpET6.png)
-  
-
+![image](https://hackmd.io/_uploads/rydkfFReC.png)  
 
 ### Update
 :::info
@@ -260,10 +258,14 @@ RESET 電路的上拉電阻畫錯了，進行修正，連同 PCB 一起
 
 更 1.5 版：  
 將 HX711 上的 rate 腳位做成上拉電阻，以增加可以改變運作頻率的選擇  
+
+更 1.6 版：  
+增加一個額外的 UART 通道，可以外接一個 GPS 算降落傘的 CD (Coefficient Drag)
 :::
 
 ## Footprint
-![image](https://hackmd.io/_uploads/rJMnKpE6p.png)  
+![image](https://hackmd.io/_uploads/Sy2mRd0xR.png)  
+
 
 Footprint 的選擇其實有遇到一些困難  
 比較有問題的幾個分別是
@@ -285,11 +287,12 @@ Footprint 的選擇其實有遇到一些困難
 ver1.1 導了圓角  
 ver1.2 將有銳角的線路修鈍，並做些小優化  
 ver1.3 參照 sch ver1.5  
+ver1.4 參照 sch ver1.6 並將圓角推至角落改善美觀  
 :::
-![image](https://hackmd.io/_uploads/B1Bo9a4pa.png)  
+![image](https://hackmd.io/_uploads/SJNsQY0xR.png)  
 
-![image](https://hackmd.io/_uploads/HJSCq64Tp.png)  
+![image](https://hackmd.io/_uploads/H1OOXYAl0.png)  
 
 ## 待更新：
 - [x] HX711： Rate 腳位要做 either 上拉 or 下拉  
-- [ ] 增加 UART 接口  
+- [x] 增加 UART 接口  
