@@ -166,6 +166,210 @@ void loop() {
   }
 }
 ```
+:::warning
+Reviewed by 仲其宇
+1. 校正程式最好是可以跟紀錄程式放在一起，通過輸入命令來選擇是否要校正
+2. 採樣率太低了。![image](https://hackmd.io/_uploads/BybIPhG-C.png)你的 dt 長達 0.1 秒，並且還要每隔 5 次才紀錄。發動機稍一次不過 1~2 秒，這樣採樣點才 4 個，基本無法分析。採樣率至少要到 80Hz。
+3. ![image](https://hackmd.io/_uploads/rkV6uhzZR.png)
+其實沒必要進入睡眠模式，我們沒有缺電，徒增資源浪費而已。
+4. ![image](https://hackmd.io/_uploads/ryX9dnGW0.png)
+不需要把時間單位轉成秒，從頭到尾用毫秒就好，因為我們需要高響應的結果。
+5. ![image](https://hackmd.io/_uploads/Hk30_3fZC.png)不應該刪掉負數，雖然水平推測出現負數的機率很低。但這也代表如果出現負數，我們可以用來 debug。並且如果有諸如垂直推測的情況(雖然也是幾乎不太可能做)，負數就很重要了。
+6. 因為是每紀錄一筆數據就存進 SD，所以有可能出現刷新速度不夠快的情況。因此要做取樣時間的確認，確保取樣率可以保持在 80Hz。<br>如果來不及的話就必須考慮不要每次都開檔、關檔，直到測完才關閉檔案。<br>但同時也會有意點風險，就是當發動機測到一半炸掉，檔案可能會沒存到。但這時用傳輸線回傳的資料就發揮冗於作用了。
+7. 建議檔案名稱可以用 define 寫在最前面，方便測試者修改。
+8. 程式太多沒用的註解碼了，不方便閱讀。如果有空的話，順便把註解寫寫。
+9. 可以加入主動偵測發動機啟動紀錄及熄火停止的功能，方便數據分析。(為防止誤判損失資料，可以保留測試前後 1~10 秒的數據)
+:::
+
+### 修改內容  
+:::info
+reply by 簡誌加  
+
+目前已修改 1~5 以及 7~8 的問題  
+至於 6 的話會先進行每次都開關檔能否跑到 80Hz 的測試再決定去留  
+:::
+
+:::spoiler
+```cpp=
+#include <SD.h>
+#include <SPI.h>
+
+#include "HX711.h"
+
+// pre-defined macro
+#define file "test.txt"  // 檔案名稱，可以直接從這修改
+
+// Declaration of global variables
+File myFile;
+HX711 scale;
+unsigned long time;
+float t;
+int mode;
+const int scale_factor = 14;  // 比例參數，從校正程式中取得
+const int sample_weight = 1;  // 基準物品的真實重量(公克)
+bool cal_first;
+bool log_first;
+
+void calibration();
+void logging();
+void setup_calibration();
+void setup_logging();
+void setup_sdcard();
+
+void read_sd();
+
+void setup() {
+  Serial.begin(115200);
+  mode = 1;
+  
+  setup_logging();
+  setup_sdcard();
+  cal_first = false;
+  log_first = true;
+
+}
+
+void loop() {
+
+  if (Serial.available() > 0) {
+    mode = Serial.parseInt();  // set mode to either calibration(0) or logging(1)
+  }
+
+  if (mode == 0) {
+    if (cal_first == true) {
+      setup_calibration();
+      cal_first = false;
+      log_first = true;
+    }
+    calibration();
+  } else {
+    if (log == true) {
+      setup_logging();
+      setup_sdcard();
+      cal_first = true;
+      log_first = false;
+    }
+    logging();
+  }
+}
+
+void calibration() {
+  float current_weight = scale.get_units(10);  // 取得10次數值的平均
+  float scale_factor = (current_weight / sample_weight);
+  // 顯示比例參數，記起來，以便用在正式的程式中
+  Serial.print("Scale number:  ");
+  Serial.println(scale_factor, 0); 
+}
+
+void logging() {
+  time = millis();
+
+  float weight = scale.get_units(1);
+  t = (float)time / 1000.0;
+  Serial.print(t);
+  Serial.print(", ");
+
+  Serial.println(weight, 4);
+  Serial.println(" ");
+
+  //-------------------------------------------------------
+
+  if (myFile) {
+    // Serial.print("Writing to test.txt...");
+    myFile.print(t);
+    myFile.print(": ");
+    myFile.println(weight);
+
+    // close the file:
+    myFile.close();
+  } else {
+    // if the file didn't open, print an error:
+    Serial.println("error opening test.txt");
+  }
+}
+
+void setup_sdcard() {
+  while (!Serial) {
+    ;  // wait for serial port to connect. Needed for native USB port only
+  }
+
+  if (!SD.begin(10)) {
+    Serial.println("initialization failed!");
+    while (1);
+  }
+  Serial.println("initialization done.");
+
+  // open the file. note that only one file can be open at a time,
+  // so you have to close this one before opening another.
+  myFile = SD.open(file, FILE_WRITE);
+
+  // if the file opened okay, write to it:
+  if (myFile) {
+    Serial.print("Writing to test.txt...");
+    myFile.println("type today's date here");
+    myFile.println("start from here --------------------------------------");
+
+    // close the file:
+    myFile.close();
+
+    Serial.println("done.");
+  } else {
+    // if the file didn't open, print an error:
+    Serial.println("error opening test.txt");
+  }
+}
+
+void setup_logging() {
+  // reset time
+  time = 0;
+
+  Serial.println("Initializing the scale");
+  scale.begin(5, 4);
+  Serial.println("Before setting up the scale:");
+
+  Serial.println(scale.get_units(5), 0);  // 未設定比例參數前的數值
+
+  scale.set_scale(scale_factor);  // 設定比例參數
+  scale.tare();                   // 歸零
+
+  Serial.println("After setting up the scale:");
+
+  Serial.println(scale.get_units(5), 0);  // 設定比例參數後的數值
+
+  Serial.println("Readings:");  // 在這個訊息之前都不要放東西在電子稱上
+}
+
+void setup_calibration() {
+  scale.begin(5, 4);  // DT_PIN = 5, SCK_PIN = 4
+  scale.set_scale();  // 開始取得比例參數
+  scale.tare();
+  Serial.println("Nothing on it.");
+  Serial.println(scale.get_units(10));
+  Serial.println("Please put sapmple object on it...");  // 提示放上基準物品
+}
+
+void read_sd() {
+  // re-open the file for reading:
+  myFile = SD.open(file);
+  if (myFile) {
+    Serial.println("test.txt:");
+
+    // read from the file until there's nothing else in it:
+    while (myFile.available()) {
+      Serial.write(myFile.read());
+    }
+    // close the file:
+    myFile.close();
+  } else {
+    // if the file didn't open, print an error:
+    Serial.println("error opening test.txt");
+  }
+}
+```
+:::
+
+> 請打開折疊內容觀看修改後的程式碼  
+
 
 ## 校正步驟
 
