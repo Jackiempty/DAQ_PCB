@@ -557,7 +557,7 @@
       "plot": "",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "Loadcell_PCB.step",
       "svg": "",
       "vrml": ""
     },
