@@ -189,7 +189,8 @@ reply by 簡誌加
 至於 6 的話會先進行每次都開關檔能否跑到 80Hz 的測試再決定去留  
 :::
 
-:::spoiler
+<details><summary> <b>detail</b></summary>
+    
 ```cpp=
 #include <SD.h>
 #include <SPI.h>
@@ -366,7 +367,7 @@ void read_sd() {
   }
 }
 ```
-:::
+</details>
 
 > 請打開折疊內容觀看修改後的程式碼  
 
