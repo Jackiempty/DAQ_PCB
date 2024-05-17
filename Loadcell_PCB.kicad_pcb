@@ -107,11 +107,11 @@
 			(plotinvisibletext no)
 			(sketchpadsonfab no)
 			(subtractmaskfromsilk no)
-			(outputformat 4)
+			(outputformat 1)
 			(mirror no)
 			(drillshape 0)
 			(scaleselection 1)
-			(outputdirectory "")
+			(outputdirectory "./output")
 		)
 	)
 	(net 0 "")
@@ -14350,6 +14350,72 @@
 			)
 			(justify left bottom)
 		)
+	)
+	(dimension
+		(type aligned)
+		(layer "Cmts.User")
+		(uuid "414fcc16-0ed1-44ab-8e80-a4743e3eeea7")
+		(pts
+			(xy 72.5 96.8825) (xy 130 96.8825)
+		)
+		(height 3.7015)
+		(gr_text "57.5000 mm"
+			(at 101.25 99.434 0)
+			(layer "Cmts.User")
+			(uuid "414fcc16-0ed1-44ab-8e80-a4743e3eeea7")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(format
+			(prefix "")
+			(suffix "")
+			(units 3)
+			(units_format 1)
+			(precision 4)
+		)
+		(style
+			(thickness 0.15)
+			(arrow_length 1.27)
+			(text_position_mode 0)
+			(extension_height 0.58642)
+			(extension_offset 0.5) keep_text_aligned)
+	)
+	(dimension
+		(type aligned)
+		(layer "Cmts.User")
+		(uuid "aba35b85-93c2-4c4d-8d35-c00e80249ae4")
+		(pts
+			(xy 127.079 22.147) (xy 127.079 96.647)
+		)
+		(height -7.795)
+		(gr_text "74.5000 mm"
+			(at 133.724 59.397 90)
+			(layer "Cmts.User")
+			(uuid "aba35b85-93c2-4c4d-8d35-c00e80249ae4")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(format
+			(prefix "")
+			(suffix "")
+			(units 3)
+			(units_format 1)
+			(precision 4)
+		)
+		(style
+			(thickness 0.15)
+			(arrow_length 1.27)
+			(text_position_mode 0)
+			(extension_height 0.58642)
+			(extension_offset 0.5) keep_text_aligned)
 	)
 	(segment
 		(start 115.0325 40.6025)
