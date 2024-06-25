@@ -6,7 +6,7 @@
 // pre-defined macro
 #define file "test.txt"  // 檔案名稱，可以直接從這修改
 
-// Declaration of global variables
+// ******** Declaration of global variables **********
 File myFile;
 HX711 scale;
 unsigned long time;
@@ -16,13 +16,12 @@ const int scale_factor = 14;  // 比例參數，從校正程式中取得
 const int sample_weight = 1;  // 基準物品的真實重量(公克)
 bool cal_first;
 bool log_first;
-
+// ************* Declaration of functions ***********
 void calibration();
 void logging();
 void setup_calibration();
 void setup_logging();
 void setup_sdcard();
-
 void read_sd();
 
 void setup() {
@@ -38,7 +37,7 @@ void setup() {
 void loop() {
   if (Serial.available() > 0) {
     mode =
-        Serial.parseInt();  // set mode to either calibration(0) or logging(1)
+        Serial.parseInt();  // set mode to either calibration(0) or logging(1)  
   }
 
   if (mode == 0) {
@@ -49,7 +48,7 @@ void loop() {
     }
     calibration();
   } else {
-    if (log == true) {
+    if (log_first == true) {
       setup_logging();
       setup_sdcard();
       cal_first = true;
@@ -69,15 +68,16 @@ void calibration() {
 
 void logging() {
   time = millis();
-
+  
+  scale.power_up();
   float weight = scale.get_units(1);
   t = (float)time / 1000.0;
-  Serial.print(t);
-  Serial.print(", ");
+  // Serial.print(t);
+  // Serial.print(", ");
 
   Serial.println(weight, 4);
-  Serial.println(" ");
-
+  scale.power_down();
+  
   //-------------------------------------------------------
 
   if (myFile) {
