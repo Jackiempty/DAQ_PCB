@@ -8889,7 +8889,7 @@
 			(uuid "09c2e607-d254-41af-832e-17792e849cb7")
 		)
 		(instances
-			(project ""
+			(project "Loadcell_PCB"
 				(path "/59cf3c94-0731-4004-8b49-b268fb920fa8"
 					(reference "J5")
 					(unit 1)
@@ -11840,7 +11840,7 @@
 			(uuid "83ae6f17-07a8-45b1-bf4d-ca9d6ff42ddc")
 		)
 		(instances
-			(project ""
+			(project "Loadcell_PCB"
 				(path "/59cf3c94-0731-4004-8b49-b268fb920fa8"
 					(reference "U6")
 					(unit 1)
@@ -13584,7 +13584,7 @@
 			(uuid "5c28351b-4406-453b-9b8c-e6c580777765")
 		)
 		(instances
-			(project ""
+			(project "Loadcell_PCB"
 				(path "/59cf3c94-0731-4004-8b49-b268fb920fa8"
 					(reference "#PWR037")
 					(unit 1)
@@ -14601,7 +14601,7 @@
 			(uuid "1963aa33-9ef2-4656-9d41-5cfcb4b3a27f")
 		)
 		(instances
-			(project ""
+			(project "Loadcell_PCB"
 				(path "/59cf3c94-0731-4004-8b49-b268fb920fa8"
 					(reference "R18")
 					(unit 1)
@@ -15103,7 +15103,7 @@
 			(uuid "33878a74-4ace-4eea-89ed-03d569682289")
 		)
 		(instances
-			(project ""
+			(project "Loadcell_PCB"
 				(path "/59cf3c94-0731-4004-8b49-b268fb920fa8"
 					(reference "#PWR036")
 					(unit 1)
@@ -15170,7 +15170,7 @@
 			(uuid "89a471ac-606c-4fa1-834a-c17ce6f87aac")
 		)
 		(instances
-			(project ""
+			(project "Loadcell_PCB"
 				(path "/59cf3c94-0731-4004-8b49-b268fb920fa8"
 					(reference "#PWR038")
 					(unit 1)
