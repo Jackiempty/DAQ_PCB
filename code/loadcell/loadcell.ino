@@ -22,6 +22,7 @@ void logging();
 void setup_calibration();
 void setup_logging();
 void setup_sdcard();
+void read_pt();
 void read_sd();
 
 void setup() {
@@ -32,6 +33,7 @@ void setup() {
   setup_sdcard();
   cal_first = false;
   log_first = true;
+  pinMode(A1, INPUT);
 }
 
 void loop() {
@@ -152,6 +154,17 @@ void setup_calibration() {
   Serial.println("Nothing on it.");
   Serial.println(scale.get_units(10));
   Serial.println("Please put sapmple object on it...");  // 提示放上基準物品
+}
+
+void read_pt() {
+  float raw = analogRead(A1);
+  int max = 600;
+  int min = 1;
+  float slope = (max-min)/(1023-209);
+  float pressure = min + slope*raw;
+  Serial.print("Pressure: ");
+  Serial.print(pressure, 4);
+  Serial.println(" bar");
 }
 
 void read_sd() {
