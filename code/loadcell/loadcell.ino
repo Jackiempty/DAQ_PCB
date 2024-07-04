@@ -5,6 +5,7 @@
 
 // pre-defined macro
 #define file "test.txt"  // 檔案名稱，可以直接從這修改
+#define MAX 100
 
 // ******** Declaration of global variables **********
 File myFile;
@@ -22,15 +23,13 @@ void logging();
 void setup_calibration();
 void setup_logging();
 void setup_sdcard();
-void read_pt();
+float read_pt();
 void read_sd();
 
 void setup() {
   Serial.begin(115200);
   mode = 1;
 
-  setup_logging();
-  setup_sdcard();
   cal_first = false;
   log_first = true;
   pinMode(A1, INPUT);
@@ -52,7 +51,7 @@ void loop() {
   } else {
     if (log_first == true) {
       setup_logging();
-      setup_sdcard();
+      // setup_sdcard();
       cal_first = true;
       log_first = false;
     }
@@ -74,26 +73,29 @@ void logging() {
   scale.power_up();
   float weight = scale.get_units(1);
   t = (float)time / 1000.0;
-  // Serial.print(t);
-  // Serial.print(", ");
-
-  Serial.println(weight, 4);
+  Serial.print(t, 4);
+  Serial.print(", ");
+  Serial.print(weight, 4);
+  Serial.print(", ");
+  Serial.println(read_pt(), 4);
   scale.power_down();
   
   //-------------------------------------------------------
 
-  if (myFile) {
-    // Serial.print("Writing to test.txt...");
-    myFile.print(t);
-    myFile.print(": ");
-    myFile.println(weight);
+  // if (myFile) {
+  //   // Serial.print("Writing to test.txt...");
+  //   myFile.print(t);
+  //   myFile.print(", ");
+  //   myFile.print(weight);
+  //   myFile.print(", ");
+  //   myFile.println(read_pt());
 
-    // close the file:
-    myFile.close();
-  } else {
-    // if the file didn't open, print an error:
-    Serial.println("error opening test.txt");
-  }
+  //   // close the file:
+  //   myFile.close();
+  // } else {
+  //   // if the file didn't open, print an error:
+  //   Serial.println("error opening test.txt");
+  // }
 }
 
 void setup_sdcard() {
@@ -156,15 +158,14 @@ void setup_calibration() {
   Serial.println("Please put sapmple object on it...");  // 提示放上基準物品
 }
 
-void read_pt() {
+float read_pt() {
   float raw = analogRead(A1);
-  int max = 600;
-  int min = 1;
-  float slope = (max-min)/(1023-209);
-  float pressure = min + slope*raw;
-  Serial.print("Pressure: ");
-  Serial.print(pressure, 4);
-  Serial.println(" bar");
+  float Max = MAX;
+  float Min = 1;
+  float slope = (Max-Min)/float(1023-196);
+  float pressure = Min + slope*raw;
+
+  return pressure;
 }
 
 void read_sd() {
