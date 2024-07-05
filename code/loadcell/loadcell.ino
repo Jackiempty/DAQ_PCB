@@ -13,7 +13,7 @@ HX711 scale;
 unsigned long time;
 float t;
 int mode;
-const int scale_factor = 14;  // 比例參數，從校正程式中取得
+const float scale_factor = 14.6;  // 比例參數，從校正程式中取得
 const int sample_weight = 1;  // 基準物品的真實重量(公克)
 bool cal_first;
 bool log_first;
@@ -33,30 +33,33 @@ void setup() {
   cal_first = false;
   log_first = true;
   pinMode(A1, INPUT);
+
+  setup_logging();
 }
 
 void loop() {
-  if (Serial.available() > 0) {
-    mode =
-        Serial.parseInt();  // set mode to either calibration(0) or logging(1)  
-  }
+  // if (Serial.available() > 0) {
+  //   mode =
+  //       Serial.parseInt();  // set mode to either calibration(0) or logging(1)  
+  // }
 
-  if (mode == 0) {
-    if (cal_first == true) {
-      setup_calibration();
-      cal_first = false;
-      log_first = true;
-    }
-    calibration();
-  } else {
-    if (log_first == true) {
-      setup_logging();
-      // setup_sdcard();
-      cal_first = true;
-      log_first = false;
-    }
-    logging();
-  }
+  // if (mode == 0) {
+  //   if (cal_first == true) {
+  //     setup_calibration();
+  //     cal_first = false;
+  //     log_first = true;
+  //   }
+  //   calibration();
+  // } else {
+  //   if (log_first == true) {
+  //     setup_logging();
+  //     // setup_sdcard();
+  //     cal_first = true;
+  //     log_first = false;
+  //   }
+  //   logging();
+  // }
+  logging();
 }
 
 void calibration() {
@@ -134,7 +137,8 @@ void setup_logging() {
   time = 0;
 
   Serial.println("Initializing the scale");
-  scale.begin(5, 4);
+  // scale.begin(5,4);
+  scale.begin(3, 2);
   Serial.println("Before setting up the scale:");
 
   Serial.println(scale.get_units(5), 0);  // 未設定比例參數前的數值
@@ -162,8 +166,8 @@ float read_pt() {
   float raw = analogRead(A1);
   float Max = MAX;
   float Min = 1;
-  float slope = (Max-Min)/float(1023-196);
-  float pressure = Min + slope*raw;
+  float slope = float(Max-Min)/float(1023-197);
+  float pressure = Min + slope*(raw-197);
 
   return pressure;
 }
