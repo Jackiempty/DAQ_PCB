@@ -8326,6 +8326,17 @@
 		)
 		(uuid "013dc0dc-3599-4f1b-a3e6-3a30df076580")
 	)
+	(label "RESET"
+		(at 96.52 41.91 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "06b4be32-6d78-42e0-9f21-c8c8471b925f")
+	)
 	(label "12V"
 		(at 123.19 78.74 0)
 		(fields_autoplaced yes)
@@ -11172,7 +11183,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_02x03_Counter_Clockwise")
-		(at 88.9 40.64 0)
+		(at 101.6 44.45 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11180,7 +11191,7 @@
 		(dnp no)
 		(uuid "421ad93b-a50e-4f6a-b54a-d99256a614a9")
 		(property "Reference" "J6"
-			(at 90.17 45.466 0)
+			(at 102.87 49.276 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11188,7 +11199,7 @@
 			)
 		)
 		(property "Value" "ISP"
-			(at 90.17 36.068 0)
+			(at 102.87 39.878 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11196,7 +11207,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_1.27mm:PinHeader_2x03_P1.27mm_Vertical"
-			(at 88.9 40.64 0)
+			(at 101.6 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11205,7 +11216,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 88.9 40.64 0)
+			(at 101.6 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11214,7 +11225,7 @@
 			)
 		)
 		(property "Description" "Generic connector, double row, 02x03, counter clockwise pin numbering scheme (similar to DIP package numbering), script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 88.9 40.64 0)
+			(at 101.6 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)

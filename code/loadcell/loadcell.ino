@@ -166,8 +166,8 @@ float read_pt() {
   float raw = analogRead(A1);
   float Max = MAX;
   float Min = 1;
-  float slope = float(Max-Min)/float(1023-197);
-  float pressure = Min + slope*(raw-197);
+  float slope = float(Max-Min)/float(1023-214);
+  float pressure = Min + slope*(raw-214);
 
   return pressure;
 }
@@ -189,3 +189,5 @@ void read_sd() {
     Serial.println("error opening test.txt");
   }
 }
+
+// 5V: 4.542
