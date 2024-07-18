@@ -14,7 +14,7 @@ unsigned long time;
 float t;
 int mode;
 const float scale_factor = 14.6;  // 比例參數，從校正程式中取得
-const int sample_weight = 1;  // 基準物品的真實重量(公克)
+const int sample_weight = 1;      // 基準物品的真實重量(公克)
 bool cal_first;
 bool log_first;
 // ************* Declaration of functions ***********
@@ -40,7 +40,8 @@ void setup() {
 void loop() {
   // if (Serial.available() > 0) {
   //   mode =
-  //       Serial.parseInt();  // set mode to either calibration(0) or logging(1)  
+  //       Serial.parseInt();  // set mode to either calibration(0) or
+  //       logging(1)
   // }
 
   // if (mode == 0) {
@@ -72,7 +73,7 @@ void calibration() {
 
 void logging() {
   time = millis();
-  
+
   scale.power_up();
   float weight = scale.get_units(1);
   t = (float)time / 1000.0;
@@ -82,7 +83,7 @@ void logging() {
   Serial.print(", ");
   Serial.println(read_pt(), 4);
   scale.power_down();
-  
+
   //-------------------------------------------------------
 
   // if (myFile) {
@@ -166,9 +167,14 @@ float read_pt() {
   float raw = analogRead(A1);
   float Max = MAX;
   float Min = 1;
-  float slope = float(Max-Min)/float(1023-214);
-  float pressure = Min + slope*(raw-214);
-
+  float V5_actual = 4.34;
+  float Max_ADC = 0.02 * 242 / V5_actual * 1023;
+  float Bar_1_Value = 224;
+  float slope = float(Max - Min) /
+                float(Max_ADC - Bar_1_Value);  // V5 actual voltage is 4.34V
+  float pressure = (Min + slope * (raw - Bar_1_Value)) *
+                   1000.0;  // With 242ohm shunt resistor, 1023 should be 4.84v
+                            // Therefore, after correction 4.84 should be 1141
   return pressure;
 }
 
@@ -189,5 +195,3 @@ void read_sd() {
     Serial.println("error opening test.txt");
   }
 }
-
-// 5V: 4.542
