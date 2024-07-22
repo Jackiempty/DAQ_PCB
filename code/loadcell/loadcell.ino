@@ -33,6 +33,7 @@ void setup() {
   cal_first = false;
   log_first = true;
   pinMode(A1, INPUT);
+  analogReference(INTERNAL);
 
   setup_logging();
 }

@@ -35,3 +35,4 @@ fp-info-cache
 # Custom ignore files
 .DS_Store
 output
+.vscode
