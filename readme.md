@@ -189,9 +189,8 @@ reply by 簡誌加
 至於 6 的話會先進行每次都開關檔能否跑到 80Hz 的測試再決定去留  
 :::
 
-<details><summary> <b>detail</b></summary>
-    
-```cpp=
+:::spoiler
+```cpp
 #include <SD.h>
 #include <SPI.h>
 
@@ -367,7 +366,9 @@ void read_sd() {
   }
 }
 ```
-</details>
+
+:::
+
 
 > 請打開折疊內容觀看修改後的程式碼  
 
@@ -502,3 +503,49 @@ ver1.4 參照 sch ver1.6 並將圓角推至角落改善美觀
 - [x] HX711： Rate 腳位要做 either 上拉 or 下拉  
 - [x] 增加 UART 接口  
 - [ ] 修改程式碼，改進 data logging 的品質  
+    
+    
+# PT
+由於後來需要加上艙壓的測量，所以引進了 PT `(pressure transducer)` 的讀取功能進到板子裡，這裡先上 PT 的規格：  
+* [**Datasheet**](https://www.yuden.com.tw/uploadfiles/423/Products/Catalog/eyc-huba-511_pressure_sensor-20190409.pdf)
+* 種類：電流式
+* 電流範圍：4 ~ 20 mA
+* 壓力範圍：~ 100 bar
+* 供電：8 ~ 33 VDC
+
+## 使用方式
+我們採取的作法是使用 Arduino 板子上的 ADC 作為我們讀取電壓的接口，由於 Arduino 的 ADC 能夠讀取的電壓範圍是 0 ~ 5 V，所以配合電流的範圍 4 ~ 20 mA 我們得到
+$5V \div 0.02A = 250 \Omega$，於是我們便在 ADC 的讀取接口與地線之間串了 250 $\Omega$ 的電阻並讓 ADC 的讀值會介於 1 ~ 5 V 之間，並透過線性的對應關係就可以知道壓力的值為多少。  
+
+然而，由於我們的供電沒辦法完全給夠 5V，所以最後的最高位參考電壓會變成是供電的電壓，也就是 4.5V，並且不穩定。為了讓參考電壓是穩定的，我們將 `analogRead()` 的參考電壓設為 1.1V，方法是透過在 `setup()` 裡面加上一段：
+```cpp
+void setup() {
+    .......
+    analogReference(INTERNAL);
+    .......
+}
+```
+詳細說明請見[這裡](https://www.arduino.cc/reference/en/language/functions/analog-io/analogreference/)
+
+## 程式碼
+不囉唆，直接上：
+```cpp
+float read_pt() {
+  float raw = analogRead(A1);
+  float Max = MAX;
+  float Min = 1;
+  float V1R1_actual = 1.1;
+  float Max_ADC = 0.02 * 47 / V1R1_actual * 1023;
+  float Bar_1_Value = 224;
+  float slope = float(Max - Min) / float(Max_ADC - Bar_1_Value);
+  float pressure = (Min + slope * (raw - Bar_1_Value)) * 1000.0;
+  return pressure;
+}
+```
+
+原理很簡單，讀取到的電壓為 1 ~ 1.1 V，對應到板子所顯示的數字是約 204 ~ 1023，所以程式碼裡面 `raw` 的範圍就會是 204 ~ 1023。但由於我們的電阻沒辦法剛剛好就是精準的 55 Ohms，所以我們的斜率實際上是要用 $\Delta$壓力 / $\Delta$角位讀值，才能夠精準地讓讀值跟我們所求的數值互相對應。  
+
+剩下的就是線性對應的算式，沒什麼好解釋的，反正重點就是最後 `pressure` 這個變數就會是我們要求的氣壓值。  
+
+## 測試結果
+前幾天 7/4 的時候我有去柏漢的實驗室用那邊的鋼瓶給氣壓去測 PT 是否能正常運作，那時候我們上面接的電阻實際量出來約為 242，所以對應到前面程式碼的話 204 就會變成 197，除此之外都一樣，量出來的數值雖然會浮動，但整體的範圍還算正確，然後因為沒有存證，所以我跟柏翰就是此實驗的證人，如果你還不相信，那我也沒辦法～  
