@@ -170,7 +170,7 @@ float read_pt() {
   float Min = 1;
   float V1R1_actual = 1.1;
   float Max_ADC = 0.02 * 47 / V1R1_actual * 1023;
-  float Bar_1_Value = 224;
+  float Bar_1_Value = 174.84;
   float slope = float(Max - Min) / float(Max_ADC - Bar_1_Value);
   float pressure = (Min + slope * (raw - Bar_1_Value)) * 1000.0;
   return pressure;
