@@ -12,13 +12,8 @@ File myFile;
 HX711 scale;
 unsigned long time;
 float t;
-int mode;
 const float scale_factor = 14.6;  // 比例參數，從校正程式中取得
-const int sample_weight = 1;      // 基準物品的真實重量(公克)
-bool cal_first;
-bool log_first;
 // ************* Declaration of functions ***********
-void calibration();
 void logging();
 void setup_calibration();
 void setup_logging();
@@ -28,10 +23,7 @@ void read_sd();
 
 void setup() {
   Serial.begin(115200);
-  mode = 1;
 
-  cal_first = false;
-  log_first = true;
   pinMode(A1, INPUT);
   analogReference(INTERNAL);
 
@@ -39,37 +31,7 @@ void setup() {
 }
 
 void loop() {
-  // if (Serial.available() > 0) {
-  //   mode =
-  //       Serial.parseInt();  // set mode to either calibration(0) or
-  //       logging(1)
-  // }
-
-  // if (mode == 0) {
-  //   if (cal_first == true) {
-  //     setup_calibration();
-  //     cal_first = false;
-  //     log_first = true;
-  //   }
-  //   calibration();
-  // } else {
-  //   if (log_first == true) {
-  //     setup_logging();
-  //     // setup_sdcard();
-  //     cal_first = true;
-  //     log_first = false;
-  //   }
-  //   logging();
-  // }
   logging();
-}
-
-void calibration() {
-  float current_weight = scale.get_units(10);  // 取得10次數值的平均
-  float scale_factor = (current_weight / sample_weight);
-  // 顯示比例參數，記起來，以便用在正式的程式中
-  Serial.print("Scale number:  ");
-  Serial.println(scale_factor, 0);
 }
 
 void logging() {
