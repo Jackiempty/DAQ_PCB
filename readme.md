@@ -1,4 +1,4 @@
-# Loadcell Datalogging 開發日記
+# DAQ Datalogging 開發日記
 
 [![hackmd-github-sync-badge](https://hackmd.io/6wCwDJi5RnyODmf0SUcP3A/badge)](https://hackmd.io/6wCwDJi5RnyODmf0SUcP3A)  
 
@@ -6,166 +6,15 @@
 ###### tags:`Avionics`
 
 ## 線路連接
-![image](https://hackmd.io/_uploads/SJgJyJ1DKa.png)
+![image](https://hackmd.io/_uploads/SJgJyJ1DKa.png =x800)
 
 
 ## 程式碼
 ### 校正程式
-```cpp
-#include "HX711.h"
-
-// HX711 接線設定
-const int DT_PIN = 5;
-const int SCK_PIN = 4;
-const int sample_weight = 1;  //基準物品的真實重量(公克)
-
-HX711 scale;
-
-void setup() {
-  Serial.begin(9600);
-  scale.begin(DT_PIN, SCK_PIN);
-  scale.set_scale();  // 開始取得比例參數
-  scale.tare();
-  Serial.println("Nothing on it.");
-  Serial.println(scale.get_units(10));
-  Serial.println("Please put sapmple object on it..."); //提示放上基準物品
-  
-}
-
-void loop() {
-  float current_weight=scale.get_units(10);  // 取得10次數值的平均
-  float scale_factor=(current_weight/sample_weight);
-  Serial.print("Scale number:  ");
-  Serial.println(scale_factor,0);  // 顯示比例參數，記起來，以便用在正式的程式中
-  
-}
-```
+[Github 連結](https://github.com/Jackiempty/DAQ_PCB/blob/main/code/correction/correction.ino)
 
 ### 紀錄程式
-```cpp
-#include <SPI.h>
-#include <SD.h>
-#include "HX711.h"
-
-File myFile;
-// const int DT_PIN = 5;
-// const int SCK_PIN = 4;
-const int scale_factor = 14; //比例參數，從校正程式中取得
-
-HX711 scale;
-unsigned long time;
-float t;
-
-void setup() {
-  // reset time
-  time = 0;
-
-  // Open serial communications and wait for port to open:
-  Serial.begin(115200);
-  
-  // Serial.println("Initializing the scale");
-  scale.begin(5, 4);
-  // Serial.println("Before setting up the scale:"); 
-  
-  // Serial.println(scale.get_units(5), 0);	//未設定比例參數前的數值
-
-  scale.set_scale(scale_factor);       // 設定比例參數
-  scale.tare();				        // 歸零
-
-  // Serial.println("After setting up the scale:"); 
-
-  // Serial.println(scale.get_units(5), 0);  //設定比例參數後的數值
-
-  // Serial.println("Readings:");  //在這個訊息之前都不要放東西在電子稱上
-
-  //-----------------------------------------------------------------------------
-
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
-
-  if (!SD.begin(10)) {
-    Serial.println("initialization failed!");
-    while (1);
-  }
-  // Serial.println("initialization done.");
-
-  // open the file. note that only one file can be open at a time,
-  // so you have to close this one before opening another.
-  myFile = SD.open("test.txt", FILE_WRITE);
-
-  // if the file opened okay, write to it:
-  if (myFile) {
-    // Serial.print("Writing to test.txt...");
-    
-    myFile.println("testing 1, 2, 3."); // 這裡可以填上當天的日期，時間
-
-    // close the file:
-    myFile.close();
-    // Serial.println("done.");
-  } else {
-    // if the file didn't open, print an error:
-    Serial.println("error opening test.txt");
-  }
-
-  // re-open the file for reading:
-  
-  // myFile = SD.open("test.txt");
-  // if (myFile) {
-  //   Serial.println("test.txt:");
-
-  //   // read from the file until there's nothing else in it:
-  //   while (myFile.available()) {
-  //     Serial.write(myFile.read());
-  //   }
-  //   // close the file:
-  //   myFile.close();
-  // } else {
-  //   // if the file didn't open, print an error:
-  //   Serial.println("error opening test.txt");
-  // }
-}
-
-void loop() {
-  time = millis() / 100;
-  if(time % 5 == 0)
-  {
-    // put your main code here, to run repeatedly:
-    scale.power_up();               // 結束睡眠模式
-    // Serial.println(scale.get_units(1),4); 
-    float weight = scale.get_units(1);
-    t = (float)time/10.0;
-    Serial.print(t);
-    Serial.print(", ");
-    Serial.println(weight, 4);
-    //避免出現負數
-    if(weight<=0){
-      weight = 0;
-    }
- 
-    scale.power_down();			        // 進入睡眠模式
-
-  //-------------------------------------------------------
-
-    myFile = SD.open("test.txt", FILE_WRITE);
-    if (myFile) {
-      // Serial.print("Writing to test.txt...");
-      myFile.print(t);
-      myFile.print(": ");
-      myFile.println(weight);
-
-      // close the file:
-      myFile.close();
-      // Serial.println("done.");
-    } 
-    else 
-    {
-      // if the file didn't open, print an error:
-      Serial.println("error opening test.txt");
-    }
-  }
-}
-```
+[Github 連結](https://github.com/Jackiempty/DAQ_PCB/blob/main/code/DAQ/DAQ.ino)
 :::warning
 Reviewed by 仲其宇
 1. 校正程式最好是可以跟紀錄程式放在一起，通過輸入命令來選擇是否要校正
@@ -188,190 +37,6 @@ reply by 簡誌加
 目前已修改 1~5 以及 7~8 的問題  
 至於 6 的話會先進行每次都開關檔能否跑到 80Hz 的測試再決定去留  
 :::
-
-:::spoiler
-```cpp
-#include <SD.h>
-#include <SPI.h>
-
-#include "HX711.h"
-
-// pre-defined macro
-#define file "test.txt"  // 檔案名稱，可以直接從這修改
-
-// Declaration of global variables
-File myFile;
-HX711 scale;
-unsigned long time;
-float t;
-int mode;
-const int scale_factor = 14;  // 比例參數，從校正程式中取得
-const int sample_weight = 1;  // 基準物品的真實重量(公克)
-bool cal_first;
-bool log_first;
-
-void calibration();
-void logging();
-void setup_calibration();
-void setup_logging();
-void setup_sdcard();
-
-void read_sd();
-
-void setup() {
-  Serial.begin(115200);
-  mode = 1;
-  
-  setup_logging();
-  setup_sdcard();
-  cal_first = false;
-  log_first = true;
-
-}
-
-void loop() {
-
-  if (Serial.available() > 0) {
-    mode = Serial.parseInt();  // set mode to either calibration(0) or logging(1)
-  }
-
-  if (mode == 0) {
-    if (cal_first == true) {
-      setup_calibration();
-      cal_first = false;
-      log_first = true;
-    }
-    calibration();
-  } else {
-    if (log == true) {
-      setup_logging();
-      setup_sdcard();
-      cal_first = true;
-      log_first = false;
-    }
-    logging();
-  }
-}
-
-void calibration() {
-  float current_weight = scale.get_units(10);  // 取得10次數值的平均
-  float scale_factor = (current_weight / sample_weight);
-  // 顯示比例參數，記起來，以便用在正式的程式中
-  Serial.print("Scale number:  ");
-  Serial.println(scale_factor, 0); 
-}
-
-void logging() {
-  time = millis();
-
-  float weight = scale.get_units(1);
-  t = (float)time / 1000.0;
-  Serial.print(t);
-  Serial.print(", ");
-
-  Serial.println(weight, 4);
-  Serial.println(" ");
-
-  //-------------------------------------------------------
-
-  if (myFile) {
-    // Serial.print("Writing to test.txt...");
-    myFile.print(t);
-    myFile.print(": ");
-    myFile.println(weight);
-
-    // close the file:
-    myFile.close();
-  } else {
-    // if the file didn't open, print an error:
-    Serial.println("error opening test.txt");
-  }
-}
-
-void setup_sdcard() {
-  while (!Serial) {
-    ;  // wait for serial port to connect. Needed for native USB port only
-  }
-
-  if (!SD.begin(10)) {
-    Serial.println("initialization failed!");
-    while (1);
-  }
-  Serial.println("initialization done.");
-
-  // open the file. note that only one file can be open at a time,
-  // so you have to close this one before opening another.
-  myFile = SD.open(file, FILE_WRITE);
-
-  // if the file opened okay, write to it:
-  if (myFile) {
-    Serial.print("Writing to test.txt...");
-    myFile.println("type today's date here");
-    myFile.println("start from here --------------------------------------");
-
-    // close the file:
-    myFile.close();
-
-    Serial.println("done.");
-  } else {
-    // if the file didn't open, print an error:
-    Serial.println("error opening test.txt");
-  }
-}
-
-void setup_logging() {
-  // reset time
-  time = 0;
-
-  Serial.println("Initializing the scale");
-  scale.begin(5, 4);
-  Serial.println("Before setting up the scale:");
-
-  Serial.println(scale.get_units(5), 0);  // 未設定比例參數前的數值
-
-  scale.set_scale(scale_factor);  // 設定比例參數
-  scale.tare();                   // 歸零
-
-  Serial.println("After setting up the scale:");
-
-  Serial.println(scale.get_units(5), 0);  // 設定比例參數後的數值
-
-  Serial.println("Readings:");  // 在這個訊息之前都不要放東西在電子稱上
-}
-
-void setup_calibration() {
-  scale.begin(5, 4);  // DT_PIN = 5, SCK_PIN = 4
-  scale.set_scale();  // 開始取得比例參數
-  scale.tare();
-  Serial.println("Nothing on it.");
-  Serial.println(scale.get_units(10));
-  Serial.println("Please put sapmple object on it...");  // 提示放上基準物品
-}
-
-void read_sd() {
-  // re-open the file for reading:
-  myFile = SD.open(file);
-  if (myFile) {
-    Serial.println("test.txt:");
-
-    // read from the file until there's nothing else in it:
-    while (myFile.available()) {
-      Serial.write(myFile.read());
-    }
-    // close the file:
-    myFile.close();
-  } else {
-    // if the file didn't open, print an error:
-    Serial.println("error opening test.txt");
-  }
-}
-```
-
-:::
-
-
-> 請打開折疊內容觀看修改後的程式碼  
-
 
 ## 校正步驟
 
@@ -426,11 +91,11 @@ void read_sd() {
 ## 外殼
 用 Solidworks 簡單畫了一個外殼，除了有仔細算過整個總成的 Dimension 並畫出可以 fit 整片洞洞板上去，還在殼上弄出一些洞可以穿線路，最後還設計了一個可以卡上去的蓋子  
 
-![image](https://hackmd.io/_uploads/Hy2IO4Ria.png)  
+![image](https://hackmd.io/_uploads/Hy2IO4Ria.png =x300)  
 
 在計算總成的 Dimension 時也順便把它畫出來以方便比對外殼的大小有沒有畫對  
 
-![image](https://hackmd.io/_uploads/SJTLcV0ja.png)  
+![image](https://hackmd.io/_uploads/SJTLcV0ja.png =x300)  
 
 
 # PCB 開發紀錄
@@ -495,14 +160,14 @@ ver1.2 將有銳角的線路修鈍，並做些小優化
 ver1.3 參照 sch ver1.5  
 ver1.4 參照 sch ver1.6 並將圓角推至角落改善美觀  
 :::
-![image](https://hackmd.io/_uploads/SJNsQY0xR.png)  
+![image](https://hackmd.io/_uploads/SJNsQY0xR.png =500x)  
 
-![image](https://hackmd.io/_uploads/H1OOXYAl0.png)  
+![image](https://hackmd.io/_uploads/H1OOXYAl0.png =x500)  
 
 ## 待更新：
 - [x] HX711： Rate 腳位要做 either 上拉 or 下拉  
 - [x] 增加 UART 接口  
-- [ ] 修改程式碼，改進 data logging 的品質  
+- [x] 修改程式碼，改進 data logging 的品質  
     
     
 # PT
@@ -548,4 +213,4 @@ float read_pt() {
 剩下的就是線性對應的算式，沒什麼好解釋的，反正重點就是最後 `pressure` 這個變數就會是我們要求的氣壓值。  
 
 ## 測試結果
-前幾天 7/4 的時候我有去柏漢的實驗室用那邊的鋼瓶給氣壓去測 PT 是否能正常運作，那時候我們上面接的電阻實際量出來約為 242，所以對應到前面程式碼的話 204 就會變成 197，除此之外都一樣，量出來的數值雖然會浮動，但整體的範圍還算正確，然後因為沒有存證，所以我跟柏翰就是此實驗的證人，如果你還不相信，那我也沒辦法～  
+前幾天 7/4 的時候我有去柏漢的實驗室用那邊的鋼瓶給氣壓去測 PT 是否能正常運作，那時候我們上面接的電阻實際量出來約為 242，所以對應到前面程式碼的話 204 就會變成 197，除此之外都一樣，量出來的數值雖然會浮動，但整體的範圍還算正確。  
